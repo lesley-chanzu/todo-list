@@ -3,10 +3,13 @@ import { useState } from "react";
 const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const [editTask, setEditTask] = useState(null);
+  const [editedTask, setEditedTask] = useState('');
 
   function addTask(task) {
     setTasks([...tasks, { id: tasks.length + 1, title: task }]);
     setNewTask("");
+    setEditTask(null);
   }
 
   function deleteTask(taskId) {
@@ -20,7 +23,9 @@ const ToDoList = () => {
         <input type="text" value={newTask} onChange={e => setNewTask(e.target.value)} placeholder="Add new task" />
         <button className="btn add-btn" onClick={() => addTask(newTask)}>Add Task</button>
         {tasks.map((task, index) => <div key={task.id}>
-          <p>{index + 1}. {task.title}</p>
+          {task.id === editTask?.id ? <input type="text" placeholder="edit task" /> :
+            <p>{index + 1}. {task.title}</p>}
+          <button className="btn edit-btn" onClick={() => setEditTask(task)}>Edit</button>
           <button className="btn del-btn" onClick={() => deleteTask(task.id)}>Delete</button>
         </div>)}
       </div>
